@@ -3,17 +3,17 @@ from dataclasses import dataclass
 from abc import ABC
 
 class Vehicle(ABC):
-    started = False
 
     def __init__(self, weight=1, fuel=1, fuel_consumption=1): #потребление литры/100км
         self.weight = weight
         self.fuel = fuel
         self.fuel_consumption = fuel_consumption
+        self.started = False
 
     def start(self):
-        if self.started == False:
+        if not self.started:
             if self.fuel > 0:
-                self.started = True
+                self.started
                 return
             return exceptions.LowFuelError()
         print('уже заведена машина')
@@ -29,19 +29,21 @@ class Vehicle(ABC):
             return
         return exceptions.NotEnoughFuel()
 
+p = Vehicle(fuel=10)
+print(p.start())
 #Создайте датакласс Engine, добавьте атрибуты volume и pistons
 @dataclass
 class Engine:
-    volume: int
-    pistons: int
+    volume: int = 10
+    pistons: int = 10
 
 #Cоздайте класс Car - класс Car должен быть наследником Vehicle - добавьте атрибут engine классу Car
 #- объявите метод set_engine, который принимает в себя экземпляр объекта Engine и
 # устанавливает на текущий экземпляр Car
 
 class Car(Vehicle):
-    def __init__(self, fuell):
-        super().__init__(fuel=fuell)
+    def __init__(self, fuel, weight, fuel_consumption):
+        super().__init__(fuel, weight, fuel_consumption)
         self.engine = Engine(10, 10)
 
     def set_engine(self, engine):
@@ -59,11 +61,10 @@ class Car(Vehicle):
 # которое было до обнуления
 
 class Plane(Vehicle):
-    cargo = 15
-    max_cargo = 30
-    def __init__(self, maximum_cargo=max_cargo):
-        super().__init__()
-        self.max_cargo = maximum_cargo
+    def __init__(self, max_cargo, cargo, weight, fuel, fuel_consumption):
+        super().__init__(weight, fuel, fuel_consumption)
+        self.max_cargo = max_cargo
+        self.cargo = cargo
     def load_cargo(self, new_cargo):
         full_cargo = self.cargo + new_cargo
         if full_cargo <= self.max_cargo:
@@ -79,8 +80,8 @@ class Plane(Vehicle):
 
 
 
-a = Plane(130)
-a.load_cargo(new_cargo=100)
+a = Plane(fuel=100, max_cargo=100, cargo=20, weight=1, fuel_consumption=10)
+a.load_cargo(new_cargo=50)
 b = a.remove_all_cargo()
 print(b)
 print(a.cargo)
