@@ -29,8 +29,6 @@ class Vehicle(ABC):
             return
         return exceptions.NotEnoughFuel()
 
-p = Vehicle(fuel=10)
-print(p.start())
 #Создайте датакласс Engine, добавьте атрибуты volume и pistons
 @dataclass
 class Engine:
